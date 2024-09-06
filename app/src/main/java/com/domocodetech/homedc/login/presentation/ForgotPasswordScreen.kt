@@ -1,4 +1,4 @@
-package com.domocodetech.homedc.login
+package com.domocodetech.homedc.login.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.domocodetech.homedc.login.viewmodel.LoginViewModel
 
 @Composable
 fun ForgotPasswordScreen(onResetClick: (String) -> Unit, navController: NavController, viewModel: LoginViewModel = viewModel()) {
