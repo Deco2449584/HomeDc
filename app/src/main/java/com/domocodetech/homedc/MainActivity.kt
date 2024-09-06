@@ -6,18 +6,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.domocodetech.homedc.home.HomeScreen
 import com.domocodetech.homedc.login.ForgotPasswordScreen
 import com.domocodetech.homedc.login.LoginScreen
 import com.domocodetech.homedc.login.LoginViewModel
@@ -94,7 +88,7 @@ class MainActivity : ComponentActivity() {
                         // Handle forgot password logic
                     }
                     composable("main") {
-                        MainContent()
+                        HomeScreen()
                     }
                 }
             }
@@ -114,20 +108,7 @@ class MainActivity : ComponentActivity() {
         signInLauncher.launch(signInIntent)
     }
 
-    @Composable
-    fun MainContent() {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            Greeting(
-                name = "Android",
-                modifier = Modifier.padding(innerPadding)
-            )
-        }
-    }
 
-    @Composable
-    fun Greeting(name: String, modifier: Modifier = Modifier) {
-        Column(modifier = modifier) {
-            Text(text = "Hello $name!")
-        }
-    }
+
+
 }

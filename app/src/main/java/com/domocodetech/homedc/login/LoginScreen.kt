@@ -54,7 +54,9 @@ fun LoginScreen(
                     errorMessage = "Email and password cannot be empty"
                 } else {
                     viewModel.loginWithEmail(email, password, context, {
-                        navController.navigate("main")
+                        navController.navigate("main") {
+                            popUpTo("login") { inclusive = true }
+                        }
                     }, { error ->
                         errorMessage = error
                     })
