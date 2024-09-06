@@ -35,6 +35,23 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+    fun registerWithEmail(email: String, password: String, context: Context, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        viewModelScope.launch {
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val token = task.result?.user?.getIdToken(false)?.result?.token
+                        token?.let { SharedPreferencesManager.saveAuthToken(context, it) }
+                        Log.d("LoginViewModel", "Registration with email successful")
+                        onSuccess()
+                    } else {
+                        Log.d("LoginViewModel", "Registration with email failed: ${task.exception?.message}")
+                        onFailure(task.exception?.message ?: "Unknown error")
+                    }
+                }
+        }
+    }
+
     fun loginWithGoogle(account: GoogleSignInAccount?, context: Context) {
         val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
         auth.signInWithCredential(credential)

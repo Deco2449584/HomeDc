@@ -68,9 +68,13 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("register") {
                         RegisterScreen(onRegisterClick = { email, password ->
-                            // Handle registration logic
-                            navController.popBackStack()
-                        })
+                            loginViewModel.registerWithEmail(email, password, this@MainActivity, {
+                                navController.popBackStack()
+                            }, { errorMessage ->
+                                // Handle registration failure (e.g., show a toast or dialog)
+                            })
+                        }, navController = navController)
+                        // Handle registration logic
                     }
                     composable("forgotPassword") {
                         ForgotPasswordScreen(onResetClick = { email ->
