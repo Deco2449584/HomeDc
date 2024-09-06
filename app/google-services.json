@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1081444188991",
+    "project_id": "homedc-101d8",
+    "storage_bucket": "homedc-101d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081444188991:android:9694b1bc21c36ce942098a",
+        "android_client_info": {
+          "package_name": "com.domocodetech.homedc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081444188991-7qjo6sbsttmgq6kql7thl5nopusvd3vq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.domocodetech.homedc",
+            "certificate_hash": "609a76d830a68873f9e22122f28aec23872141fc"
+          }
+        },
+        {
+          "client_id": "1081444188991-9f5pft95rf66nu1hiis81bbjuhmffagj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_UZ5is3ifAPJjzlkpy8YU--ifMDp_WKg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081444188991-9f5pft95rf66nu1hiis81bbjuhmffagj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
