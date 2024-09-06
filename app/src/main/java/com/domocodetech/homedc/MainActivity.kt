@@ -7,7 +7,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +21,7 @@ import com.domocodetech.homedc.login.ForgotPasswordScreen
 import com.domocodetech.homedc.login.LoginScreen
 import com.domocodetech.homedc.login.RegisterScreen
 import com.domocodetech.homedc.ui.theme.HomeDcTheme
+import com.domocodetech.homedc.utils.SharedPreferencesManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -46,6 +46,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth = FirebaseAuth.getInstance()
+        val token = SharedPreferencesManager.getAuthToken(this)
+        isUserLoggedIn = token != null
+
         setContent {
             HomeDcTheme {
                 val navController = rememberNavController()
@@ -85,7 +89,6 @@ class MainActivity : ComponentActivity() {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-        auth = FirebaseAuth.getInstance()
     }
 
     private fun signIn() {
@@ -100,6 +103,7 @@ class MainActivity : ComponentActivity() {
                 if (task.isSuccessful) {
                     // Sign in success
                     isUserLoggedIn = true
+                    account?.idToken?.let { SharedPreferencesManager.saveAuthToken(this, it) }
                 } else {
                     // Sign in failed
                     // Handle error
