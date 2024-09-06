@@ -23,6 +23,7 @@ fun LoginScreen(
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
     val context = LocalContext.current
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -45,9 +46,19 @@ fun LoginScreen(
                 label = { Text("Password") },
                 visualTransformation = PasswordVisualTransformation()
             )
+            if (errorMessage.isNotEmpty()) {
+                Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
+            }
             Button(onClick = {
-                viewModel.loginWithEmail(email, password, context)
-                navController.navigate("main")
+                if (email.isEmpty() || password.isEmpty()) {
+                    errorMessage = "Email and password cannot be empty"
+                } else {
+                    viewModel.loginWithEmail(email, password, context, {
+                        navController.navigate("main")
+                    }, { error ->
+                        errorMessage = error
+                    })
+                }
             }) {
                 Text(text = "Login")
             }

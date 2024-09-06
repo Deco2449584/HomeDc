@@ -59,7 +59,13 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = if (isUserLoggedIn) "main" else "login") {
                     composable("login") {
                         LoginScreen(
-                            onLoginClick = { email, password -> loginViewModel.loginWithEmail(email, password, this@MainActivity) },
+                            onLoginClick = { email, password ->
+                                loginViewModel.loginWithEmail(email, password, this@MainActivity, {
+                                    navController.navigate("main")
+                                }, { error ->
+                                    // Handle login failure (e.g., show a toast or dialog)
+                                })
+                            },
                             onGoogleLoginClick = { signIn() },
                             onRegisterClick = { navController.navigate("register") },
                             onForgotPasswordClick = { navController.navigate("forgotPassword") },
@@ -78,9 +84,14 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("forgotPassword") {
                         ForgotPasswordScreen(onResetClick = { email ->
-                            // Handle password reset logic
-                            navController.popBackStack()
-                        })
+                            loginViewModel.resetPassword(email, {
+                                // Handle success (e.g., show a toast or dialog)
+                                navController.popBackStack()
+                            }, { errorMessage ->
+                                // Handle failure (e.g., show a toast or dialog)
+                            })
+                        }, navController = navController)
+                        // Handle forgot password logic
                     }
                     composable("main") {
                         MainContent()

@@ -18,7 +18,7 @@ class LoginViewModel : ViewModel() {
     private val _isUserLoggedIn = MutableStateFlow(false)
     val isUserLoggedIn: StateFlow<Boolean> = _isUserLoggedIn
 
-    fun loginWithEmail(email: String, password: String, context: Context) {
+    fun loginWithEmail(email: String, password: String, context: Context, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         viewModelScope.launch {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
@@ -27,9 +27,11 @@ class LoginViewModel : ViewModel() {
                         val token = task.result?.user?.getIdToken(false)?.result?.token
                         token?.let { SharedPreferencesManager.saveAuthToken(context, it) }
                         Log.d("LoginViewModel", "Login with email successful")
+                        onSuccess()
                     } else {
                         _isUserLoggedIn.value = false
                         Log.d("LoginViewModel", "Login with email failed: ${task.exception?.message}")
+                        onFailure(task.exception?.message ?: "Invalid email or password")
                     }
                 }
         }
@@ -63,6 +65,19 @@ class LoginViewModel : ViewModel() {
                 } else {
                     _isUserLoggedIn.value = false
                     Log.d("LoginViewModel", "Login with Google failed: ${task.exception?.message}")
+                }
+            }
+    }
+
+    fun resetPassword(email: String, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("LoginViewModel", "Password reset email sent successfully")
+                    onSuccess()
+                } else {
+                    Log.d("LoginViewModel", "Password reset email failed: ${task.exception?.message}")
+                    onFailure(task.exception?.message ?: "Unknown error")
                 }
             }
     }
