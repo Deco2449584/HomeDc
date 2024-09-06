@@ -1,33 +1,33 @@
 package com.domocodetech.homedc
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.domocodetech.homedc.login.ForgotPasswordScreen
 import com.domocodetech.homedc.login.LoginScreen
+import com.domocodetech.homedc.login.LoginViewModel
 import com.domocodetech.homedc.login.RegisterScreen
 import com.domocodetech.homedc.ui.theme.HomeDcTheme
 import com.domocodetech.homedc.utils.SharedPreferencesManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,48 +35,51 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
+    private val loginViewModel: LoginViewModel by viewModels()
 
     private val signInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         val account = task.result
-        firebaseAuthWithGoogle(account)
+        loginViewModel.loginWithGoogle(account, this)
     }
-
-    private var isUserLoggedIn by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = FirebaseAuth.getInstance()
         val token = SharedPreferencesManager.getAuthToken(this)
-        isUserLoggedIn = token != null
+        loginViewModel.setUserLoggedIn(token != null)
 
         setContent {
             HomeDcTheme {
                 val navController = rememberNavController()
-                if (isUserLoggedIn) {
-                    MainContent()
-                } else {
-                    NavHost(navController = navController, startDestination = "login") {
-                        composable("login") {
-                            LoginScreen(
-                                onLoginClick = { signIn() },
-                                onGoogleLoginClick = { signIn() },
-                                onRegisterClick = { navController.navigate("register") },
-                                onForgotPasswordClick = { navController.navigate("forgotPassword") }
-                            )
-                        }
-                        composable("register") {
-                            RegisterScreen(onRegisterClick = { email, password ->
-                                // Handle registration logic
-                                navController.popBackStack()
-                            })
-                        }
-                        composable("forgotPassword") {
-                            ForgotPasswordScreen(onResetClick = { email ->
-                                // Handle password reset logic
-                                navController.popBackStack()
-                            })
-                        }
+                val isUserLoggedIn by loginViewModel.isUserLoggedIn.collectAsState()
+
+                Log.d("MainActivity", "isUserLoggedIn: $isUserLoggedIn")
+
+                NavHost(navController = navController, startDestination = if (isUserLoggedIn) "main" else "login") {
+                    composable("login") {
+                        LoginScreen(
+                            onLoginClick = { email, password -> loginViewModel.loginWithEmail(email, password, this@MainActivity) },
+                            onGoogleLoginClick = { signIn() },
+                            onRegisterClick = { navController.navigate("register") },
+                            onForgotPasswordClick = { navController.navigate("forgotPassword") },
+                            navController = navController
+                        )
+                    }
+                    composable("register") {
+                        RegisterScreen(onRegisterClick = { email, password ->
+                            // Handle registration logic
+                            navController.popBackStack()
+                        })
+                    }
+                    composable("forgotPassword") {
+                        ForgotPasswordScreen(onResetClick = { email ->
+                            // Handle password reset logic
+                            navController.popBackStack()
+                        })
+                    }
+                    composable("main") {
+                        MainContent()
                     }
                 }
             }
@@ -94,21 +97,6 @@ class MainActivity : ComponentActivity() {
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
         signInLauncher.launch(signInIntent)
-    }
-
-    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
-        val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success
-                    isUserLoggedIn = true
-                    account?.idToken?.let { SharedPreferencesManager.saveAuthToken(this, it) }
-                } else {
-                    // Sign in failed
-                    // Handle error
-                }
-            }
     }
 
     @Composable

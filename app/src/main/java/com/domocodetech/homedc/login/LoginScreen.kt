@@ -5,20 +5,25 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun LoginScreen(
-    onLoginClick: () -> Unit,
+    onLoginClick: (String, String) -> Unit,
     onGoogleLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
     onForgotPasswordClick: () -> Unit,
+    navController: NavController,
     viewModel: LoginViewModel = viewModel()
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
@@ -40,7 +45,10 @@ fun LoginScreen(
                 label = { Text("Password") },
                 visualTransformation = PasswordVisualTransformation()
             )
-            Button(onClick = { viewModel.loginWithEmail(email, password) }) {
+            Button(onClick = {
+                viewModel.loginWithEmail(email, password, context)
+                navController.navigate("main")
+            }) {
                 Text(text = "Login")
             }
             Button(onClick = onGoogleLoginClick) {
@@ -60,9 +68,10 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     LoginScreen(
-        onLoginClick = {},
+        onLoginClick = { _, _ -> },
         onGoogleLoginClick = {},
         onRegisterClick = {},
-        onForgotPasswordClick = {}
+        onForgotPasswordClick = {},
+        navController = rememberNavController()
     )
 }
