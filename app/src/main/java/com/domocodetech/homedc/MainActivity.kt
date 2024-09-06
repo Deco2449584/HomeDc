@@ -15,8 +15,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.domocodetech.homedc.login.ForgotPasswordScreen
 import com.domocodetech.homedc.login.LoginScreen
+import com.domocodetech.homedc.login.RegisterScreen
 import com.domocodetech.homedc.ui.theme.HomeDcTheme
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -44,10 +48,32 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             HomeDcTheme {
+                val navController = rememberNavController()
                 if (isUserLoggedIn) {
                     MainContent()
                 } else {
-                    LoginScreen(onLoginClick = { signIn() })
+                    NavHost(navController = navController, startDestination = "login") {
+                        composable("login") {
+                            LoginScreen(
+                                onLoginClick = { signIn() },
+                                onGoogleLoginClick = { signIn() },
+                                onRegisterClick = { navController.navigate("register") },
+                                onForgotPasswordClick = { navController.navigate("forgotPassword") }
+                            )
+                        }
+                        composable("register") {
+                            RegisterScreen(onRegisterClick = { email, password ->
+                                // Handle registration logic
+                                navController.popBackStack()
+                            })
+                        }
+                        composable("forgotPassword") {
+                            ForgotPasswordScreen(onResetClick = { email ->
+                                // Handle password reset logic
+                                navController.popBackStack()
+                            })
+                        }
+                    }
                 }
             }
         }
@@ -95,17 +121,6 @@ class MainActivity : ComponentActivity() {
     fun Greeting(name: String, modifier: Modifier = Modifier) {
         Column(modifier = modifier) {
             Text(text = "Hello $name!")
-            Button(onClick = { signIn() }) {
-                Text(text = "Sign in with Google")
-            }
-        }
-    }
-
-    @Preview(showBackground = true)
-    @Composable
-    fun GreetingPreview() {
-        HomeDcTheme {
-            Greeting("Android")
         }
     }
 }
