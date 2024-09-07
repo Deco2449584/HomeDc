@@ -36,9 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -76,7 +74,7 @@ fun LoginScreen(
                 .fillMaxSize()
                 .background(
                     Brush.linearGradient(
-                        colors = listOf(Color(0xFFFFFFFF), Color(0xFF3F51B5), Color(0xFF9C27B0))
+                        colors = listOf(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.background, MaterialTheme.colorScheme.primary)
                     )
                 )
         ) {
@@ -211,10 +209,10 @@ fun LoginScreen(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 TextButton(onClick = onRegisterClick) {
-                    Text(text = "Register", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "Register", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyLarge)
                 }
                 TextButton(onClick = onForgotPasswordClick) {
-                    Text(text = "Forgot Password", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "Forgot Password", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyLarge)
                 }
             }
         }

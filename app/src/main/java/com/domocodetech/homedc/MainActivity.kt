@@ -44,7 +44,22 @@ class MainActivity : ComponentActivity() {
         // Set the content view using Compose
         setContent {
             // Setup the UI content
-            SetupContent()
+            HomeDcTheme {
+                // Create a NavController
+                val navController = rememberNavController()
+                // Collect the user login state from LoginViewModel
+                val isUserLoggedIn by loginViewModel.isUserLoggedIn.collectAsState()
+
+                // Set up the navigation graph
+                NavGraph(
+                    navController = navController,
+                    isUserLoggedIn = isUserLoggedIn,
+                    loginViewModel = loginViewModel,
+                    googleSignInClient = googleSignInClient,
+                    context = this,
+                    signInLauncher = signInLauncher
+                )
+            }
         }
     }
 
@@ -77,24 +92,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @Composable
-    private fun SetupContent() {
-        // Apply the HomeDcTheme
-        HomeDcTheme {
-            // Create a NavController
-            val navController = rememberNavController()
-            // Collect the user login state from LoginViewModel
-            val isUserLoggedIn by loginViewModel.isUserLoggedIn.collectAsState()
-
-            // Set up the navigation graph
-            NavGraph(
-                navController = navController,
-                isUserLoggedIn = isUserLoggedIn,
-                loginViewModel = loginViewModel,
-                googleSignInClient = googleSignInClient,
-                context = this,
-                signInLauncher = signInLauncher
-            )
-        }
-    }
 }

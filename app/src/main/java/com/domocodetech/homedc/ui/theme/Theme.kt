@@ -10,51 +10,32 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-private val ModernDarkColorScheme = darkColorScheme(
-    primary = Blue700,
-    onPrimary = White,
-    primaryContainer = Blue500,
-    onPrimaryContainer = White,
-    secondary = Teal700,
-    onSecondary = White,
-    secondaryContainer = Teal500,
-    onSecondaryContainer = White,
-    tertiary = Purple700,
-    onTertiary = White,
-    tertiaryContainer = Purple500,
-    onTertiaryContainer = White,
-    background = BackgroundDark,
-    onBackground = White,
-    surface = SurfaceDark,
-    onSurface = White,
-    error = Red700,
-    onError = White
+private val DarkColorScheme = darkColorScheme(
+    primary = Purple80,
+    secondary = PurpleGrey80,
+    tertiary = Pink80
 )
 
-private val ModernLightColorScheme = lightColorScheme(
-    primary = Blue500,
-    onPrimary = White,
-    primaryContainer = Blue200,
-    onPrimaryContainer = Black,
-    secondary = Teal500,
-    onSecondary = Black,
-    secondaryContainer = Teal200,
-    onSecondaryContainer = Black,
-    tertiary = Purple500,
-    onTertiary = Black,
-    tertiaryContainer = Purple200,
-    onTertiaryContainer = Black,
-    background = BackgroundLight,
-    onBackground = Black,
-    surface = SurfaceLight,
-    onSurface = Black,
-    error = Red500,
-    onError = White
+private val LightColorScheme = lightColorScheme(
+    primary = Purple40,
+    secondary = PurpleGrey40,
+    tertiary = Pink40
+
+    /* Other default colors to override
+    background = Color(0xFFFFFBFE),
+    surface = Color(0xFFFFFBFE),
+    onPrimary = Color.White,
+    onSecondary = Color.White,
+    onTertiary = Color.White,
+    onBackground = Color(0xFF1C1B1F),
+    onSurface = Color(0xFF1C1B1F),
+    */
 )
 
 @Composable
 fun HomeDcTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -64,13 +45,13 @@ fun HomeDcTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> ModernDarkColorScheme
-        else -> ModernLightColorScheme
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = CustomTypography,
+        typography = Typography,
         content = content
     )
 }
