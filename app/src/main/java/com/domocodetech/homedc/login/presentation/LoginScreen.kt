@@ -1,6 +1,8 @@
 
 package com.domocodetech.homedc.login.presentation
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -29,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,17 +41,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.domocodetech.homedc.R
 import com.domocodetech.homedc.login.viewmodel.LoginViewModel
+import kotlinx.coroutines.delay
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.ui.unit.IntOffset
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,7 +73,29 @@ fun LoginScreen(
     var rememberMe by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    val scale = remember { androidx.compose.animation.core.Animatable(1f) }
+    val scale = remember { Animatable(1f) }
+
+    // Animation for typing effect
+    var titleText by remember { mutableStateOf("") }
+    val fullTitleText = "Welcome to HomeDc"
+    LaunchedEffect(Unit) {
+        for (i in fullTitleText.indices) {
+            titleText = fullTitleText.substring(0, i + 1)
+            delay(100)
+        }
+    }
+
+    // Animation for logo movement
+    val logoOffset = remember { Animatable(0f) }
+    LaunchedEffect(Unit) {
+        logoOffset.animateTo(
+            targetValue = 100f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 2000),
+                repeatMode = RepeatMode.Reverse
+            )
+        )
+    }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Box(
@@ -74,7 +103,9 @@ fun LoginScreen(
                 .fillMaxSize()
                 .background(
                     Brush.linearGradient(
-                        colors = listOf(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.background, MaterialTheme.colorScheme.primary)
+                        colors = listOf(
+                            MaterialTheme.colorScheme.background, MaterialTheme.colorScheme.primary
+                        )
                     )
                 )
         ) {
@@ -89,10 +120,12 @@ fun LoginScreen(
                 Image(
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = "Logo",
-                    modifier = Modifier.size(100.dp)
+                    modifier = Modifier
+                        .size(200.dp)
+                        .offset { IntOffset(0, logoOffset.value.toInt()) }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Welcome to HomeDc", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground)
+                Text(text = titleText, style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.onBackground)
                 Spacer(modifier = Modifier.height(16.dp))
                 OutlinedTextField(
                     value = email,
@@ -147,7 +180,7 @@ fun LoginScreen(
                         onCheckedChange = { rememberMe = it },
                         colors = CheckboxDefaults.colors(MaterialTheme.colorScheme.primary)
                     )
-                    Text(text = "Remember Me", color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyMedium)
+                    Text(text = "Remember Me", color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodySmall)
                 }
                 if (errorMessage.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(8.dp))
@@ -184,7 +217,13 @@ fun LoginScreen(
                     if (isLoading) {
                         CircularProgressIndicator(modifier = Modifier.size(24.dp), color = MaterialTheme.colorScheme.onPrimary)
                     } else {
-                        Text(text = "Login", style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold))
+                        Text(text = "Login", style = MaterialTheme.typography.titleMedium)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(
+                            painter = painterResource(id = R.drawable.enter),
+                            contentDescription = "Login Icon",
+                            modifier = Modifier.size(24.dp)
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -199,34 +238,32 @@ fun LoginScreen(
                         contentColor = MaterialTheme.colorScheme.onSecondary
                     )
                 ) {
+                    Text(text = "Sign in with Google", style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         painter = painterResource(id = R.drawable.google),
                         contentDescription = "Google Icon",
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(24.dp),
+                        tint = Color.Unspecified
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Sign in with Google", style = MaterialTheme.typography.bodyMedium)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 TextButton(onClick = onRegisterClick) {
-                    Text(text = "Register", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        text = "Register",
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 }
+                Spacer(modifier = Modifier.height(8.dp))
                 TextButton(onClick = onForgotPasswordClick) {
-                    Text(text = "Forgot Password", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        text = "Forgot Password",
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 }
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    LoginScreen(
-        onLoginClick = { _, _ -> },
-        onGoogleLoginClick = {},
-        onRegisterClick = {},
-        onForgotPasswordClick = {},
-        navController = rememberNavController()
-    )
 }
