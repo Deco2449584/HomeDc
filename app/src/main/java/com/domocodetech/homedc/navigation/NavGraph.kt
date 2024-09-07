@@ -1,5 +1,6 @@
 package com.domocodetech.homedc.navigation
 
+import HomeScreen
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
@@ -8,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.domocodetech.homedc.home.HomeScreen
 import com.domocodetech.homedc.login.presentation.ForgotPasswordScreen
 import com.domocodetech.homedc.login.presentation.LoginScreen
 import com.domocodetech.homedc.login.viewmodel.LoginViewModel

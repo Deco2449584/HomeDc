@@ -2,8 +2,6 @@
 package com.domocodetech.homedc.login.presentation
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -32,7 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,12 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.domocodetech.homedc.R
+import com.domocodetech.homedc.login.presentation.composables.AnimatedLogoAndTitle
 import com.domocodetech.homedc.login.viewmodel.LoginViewModel
-import kotlinx.coroutines.delay
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.ui.unit.IntOffset
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,28 +66,6 @@ fun LoginScreen(
     val context = LocalContext.current
 
     val scale = remember { Animatable(1f) }
-
-    // Animation for typing effect
-    var titleText by remember { mutableStateOf("") }
-    val fullTitleText = "Welcome to HomeDc"
-    LaunchedEffect(Unit) {
-        for (i in fullTitleText.indices) {
-            titleText = fullTitleText.substring(0, i + 1)
-            delay(100)
-        }
-    }
-
-    // Animation for logo movement
-    val logoOffset = remember { Animatable(0f) }
-    LaunchedEffect(Unit) {
-        logoOffset.animateTo(
-            targetValue = 100f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(durationMillis = 2000),
-                repeatMode = RepeatMode.Reverse
-            )
-        )
-    }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Box(
@@ -117,15 +87,10 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = "Logo",
-                    modifier = Modifier
-                        .size(200.dp)
-                        .offset { IntOffset(0, logoOffset.value.toInt()) }
+                AnimatedLogoAndTitle(
+                    logoResId = R.drawable.logo,
+                    titleText = "Welcome to HomeDc"
                 )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = titleText, style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.onBackground)
                 Spacer(modifier = Modifier.height(16.dp))
                 OutlinedTextField(
                     value = email,
@@ -138,6 +103,7 @@ fun LoginScreen(
                             modifier = Modifier.size(24.dp)
                         )
                     },
+                    isError = errorMessage.isNotEmpty(),
                     modifier = Modifier
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),
@@ -160,6 +126,7 @@ fun LoginScreen(
                             modifier = Modifier.size(24.dp)
                         )
                     },
+                    isError = errorMessage.isNotEmpty(),
                     modifier = Modifier
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),
@@ -170,6 +137,9 @@ fun LoginScreen(
                     )
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+                if (errorMessage.isNotEmpty()) {
+                    Text(text = errorMessage, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
@@ -181,10 +151,6 @@ fun LoginScreen(
                         colors = CheckboxDefaults.colors(MaterialTheme.colorScheme.primary)
                     )
                     Text(text = "Remember Me", color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodySmall)
-                }
-                if (errorMessage.isNotEmpty()) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = errorMessage, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
