@@ -76,7 +76,9 @@ dependencies {
 
     // images carousel
     implementation(libs.accompanist.pager)
-    implementation (libs.accompanist.pager.indicators)
+    implementation(libs.accompanist.pager.indicators)
+    //Material Icons
+    implementation("androidx.compose.material:material-icons-extended:1.7.0")
 
     // Otras dependencias existentes
     implementation(libs.androidx.core.ktx)
