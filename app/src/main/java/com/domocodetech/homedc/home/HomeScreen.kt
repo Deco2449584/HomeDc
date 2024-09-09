@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.domocodetech.homedc.R
-import com.domocodetech.homedc.login.presentation.composables.AnimatedLogoAndTitle
+import com.domocodetech.homedc.commons.AnimatedLogoAndTitle
 
 @Composable
 fun HomeScreen() {

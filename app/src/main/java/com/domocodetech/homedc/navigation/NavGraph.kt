@@ -9,11 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.domocodetech.homedc.login.presentation.ForgotPasswordScreen
-import com.domocodetech.homedc.login.presentation.GetStartedScreen
-import com.domocodetech.homedc.login.presentation.LoginScreen
+import com.domocodetech.homedc.login.presentation.screens.ForgotPasswordScreen
+import com.domocodetech.homedc.login.presentation.screens.GetStartedScreen
+import com.domocodetech.homedc.login.presentation.screens.LoginScreen
 import com.domocodetech.homedc.login.viewmodel.LoginViewModel
-import com.domocodetech.homedc.login.presentation.RegisterScreen
+import com.domocodetech.homedc.login.presentation.screens.RegisterScreen
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
 // Define route names as constants

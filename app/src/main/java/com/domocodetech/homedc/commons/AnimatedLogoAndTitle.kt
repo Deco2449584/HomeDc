@@ -1,4 +1,4 @@
-package com.domocodetech.homedc.login.presentation.composables
+package com.domocodetech.homedc.commons
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.RepeatMode
@@ -60,7 +60,7 @@ fun AnimatedLogoAndTitle(
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = displayedTitleText,
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
     }

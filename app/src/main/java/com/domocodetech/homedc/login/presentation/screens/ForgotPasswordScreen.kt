@@ -1,4 +1,4 @@
-package com.domocodetech.homedc.login.presentation
+package com.domocodetech.homedc.login.presentation.screens
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.background
@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.domocodetech.homedc.R
-import com.domocodetech.homedc.login.presentation.composables.AnimatedLogoAndTitle
+import com.domocodetech.homedc.commons.AnimatedLogoAndTitle
 import com.domocodetech.homedc.login.viewmodel.LoginViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
