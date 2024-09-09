@@ -72,7 +72,6 @@ fun GetStartedScreen(navController: NavController) {
             ImageCarousel(
                 imageUrls = imageUrls,
                 movieTitles = movieTitles, // Pasa los títulos también
-                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
 

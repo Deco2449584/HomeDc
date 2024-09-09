@@ -2,7 +2,6 @@ package com.domocodetech.homedc.commons
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,24 +33,10 @@ import kotlin.math.absoluteValue
 fun ImageCarousel(
     imageUrls: List<String>,
     movieTitles: List<String>,
-    modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState()
-    val coroutineScope = rememberCoroutineScope()
 
-    Box(
-        modifier = Modifier
 
-            .clip(RoundedCornerShape(16.dp)) // Redondear las esquinas
-            .background(
-                Brush.linearGradient(
-                    colors = listOf(
-                        MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.background
-                    )
-                )
-            ),
-        contentAlignment = Alignment.Center
-    ) {
         Column {
             HorizontalPager(
                 count = imageUrls.size,
@@ -59,14 +44,13 @@ fun ImageCarousel(
                 contentPadding = PaddingValues(horizontal = 48.dp), // Ajustar el padding para mostrar imágenes adyacentes
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp) // Ajustar la altura para las imágenes
+                    .height(200.dp) // Ajustar la altura para las imágenes
             ) { page ->
                 val painter = rememberAsyncImagePainter(model = imageUrls[page])
                 Image(
                     painter = painter,
                     contentDescription = null,
                     modifier = Modifier
-                        .fillMaxSize() // Ajustar para que ocupe todo el espacio disponible
                         .graphicsLayer {
                             // Cálculo del desplazamiento de la página
                             val pageOffset =
@@ -89,11 +73,10 @@ fun ImageCarousel(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         // Indicadores de página en la parte inferior
         Box(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
                 .padding(8.dp)
         ) {
             HorizontalPagerIndicator(
@@ -105,4 +88,7 @@ fun ImageCarousel(
             )
         }
     }
-}
+
+
+
+
