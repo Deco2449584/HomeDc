@@ -1,4 +1,5 @@
 [versions]
+accompanistPager = "0.28.0"
 agp = "8.5.1"
 firebaseBom = "33.2.0"
 firebaseBomVersion = "31.0.2"
@@ -18,6 +19,7 @@ navigationCompose = "2.8.0"
 playServicesAuth = "21.2.0"
 
 [libraries]
+accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPager" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationCompose" }
