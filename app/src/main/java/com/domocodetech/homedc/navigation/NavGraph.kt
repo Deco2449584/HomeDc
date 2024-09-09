@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.domocodetech.homedc.login.presentation.ForgotPasswordScreen
+import com.domocodetech.homedc.login.presentation.GetStartedScreen
 import com.domocodetech.homedc.login.presentation.LoginScreen
 import com.domocodetech.homedc.login.viewmodel.LoginViewModel
 import com.domocodetech.homedc.login.presentation.RegisterScreen
@@ -20,6 +21,7 @@ private const val LOGIN_ROUTE = "login"
 private const val REGISTER_ROUTE = "register"
 private const val FORGOT_PASSWORD_ROUTE = "forgotPassword"
 private const val MAIN_ROUTE = "main"
+private const val GET_STARTED_ROUTE = "getStarted"
 
 @Composable
 fun NavGraph(
@@ -30,9 +32,10 @@ fun NavGraph(
     context: Context,
     signInLauncher: ActivityResultLauncher<Intent>
 ) {
-    // Set the start destination based on the user's login status
-    NavHost(navController = navController, startDestination = if (isUserLoggedIn) MAIN_ROUTE else LOGIN_ROUTE) {
-
+    NavHost(navController = navController, startDestination = GET_STARTED_ROUTE) {
+        composable(GET_STARTED_ROUTE) {
+            GetStartedScreen(navController = navController)
+        }
         // Login screen composable
         composable(LOGIN_ROUTE) {
             LoginScreen(

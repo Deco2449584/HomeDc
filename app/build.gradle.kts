@@ -71,6 +71,9 @@ dependencies {
     // Google Sign-In
     implementation(libs.play.services.auth)
 
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
     // Otras dependencias existentes
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
