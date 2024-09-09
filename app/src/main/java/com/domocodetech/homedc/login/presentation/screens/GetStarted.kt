@@ -52,11 +52,14 @@ fun GetStartedScreen(navController: NavController) {
 
             // Lista de URLs de las imágenes (ejemplo de coches)
             val imageUrls = listOf(
-                "https://wallpapers.com/images/hd/1920-x-1080-car-4sdj5tojfx747aly.jpg",
-                "https://wallpapers.com/images/hd/1920x1080-hd-car-b2iukmgt7rdpuv8w.jpg",
-                "https://wallpapers.com/images/hd/1920-x-1080-car-o0rkgvylu81cdjhz.jpg",
-                "https://s1.1zoom.me/b5050/112/Lamborghini_Gran_Turismo_Roads_Veneno_Back_view_567887_1920x1080.jpg",
-                "https://s1.1zoom.me/b5050/224/390120-blackangel_1920x1080.jpg"
+                "https://i.pinimg.com/736x/73/32/25/733225a9e7d62bdaa5196dfcaef18262.jpg",
+                "https://i.pinimg.com/736x/73/32/25/733225a9e7d62bdaa5196dfcaef18262.jpg",
+                "https://i.pinimg.com/736x/73/32/25/733225a9e7d62bdaa5196dfcaef18262.jpg",
+                "https://i.pinimg.com/736x/73/32/25/733225a9e7d62bdaa5196dfcaef18262.jpg",
+                "https://i.pinimg.com/736x/73/32/25/733225a9e7d62bdaa5196dfcaef18262.jpg",
+                "https://i.pinimg.com/736x/73/32/25/733225a9e7d62bdaa5196dfcaef18262.jpg",
+                "https://i.pinimg.com/736x/73/32/25/733225a9e7d62bdaa5196dfcaef18262.jpg",
+
 
             )
 
