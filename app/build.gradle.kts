@@ -73,7 +73,10 @@ dependencies {
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.4.0")
+
+    // images carousel
     implementation(libs.accompanist.pager)
+    implementation (libs.accompanist.pager.indicators)
 
     // Otras dependencias existentes
     implementation(libs.androidx.core.ktx)
