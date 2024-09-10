@@ -10,7 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.domocodetech.homedc.login.presentation.screens.ForgotPasswordScreen
-import com.domocodetech.homedc.login.presentation.screens.GetStartedScreen
+import com.domocodetech.homedc.getstarted.GetStartedScreen
 import com.domocodetech.homedc.login.presentation.screens.LoginScreen
 import com.domocodetech.homedc.login.viewmodel.LoginViewModel
 import com.domocodetech.homedc.login.presentation.screens.RegisterScreen

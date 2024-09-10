@@ -59,7 +59,7 @@ dependencies {
     // Dagger Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-
+    implementation (libs.androidx.hilt.navigation.compose)
     // Navigation
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -67,7 +67,7 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom.v3102))
     implementation(libs.firebase.auth.ktx)
-
+    implementation (libs.firebase.firestore.ktx)
     // Google Sign-In
     implementation(libs.play.services.auth)
 
