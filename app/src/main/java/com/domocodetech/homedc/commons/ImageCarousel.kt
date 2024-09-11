@@ -30,7 +30,8 @@ import kotlin.math.absoluteValue
 fun ImageCarousel(
     imageUrls: List<String>,
     movieTitles: List<String>,
-    onPageChanged: (Int) -> Unit
+    onPageChanged: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(
         pageCount = { imageUrls.size },

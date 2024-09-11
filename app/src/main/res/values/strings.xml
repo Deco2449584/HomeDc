@@ -1,4 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">HomeDc</string>
     <string name="default_web_client_id">AIzaSyB_UZ5is3ifAPJjzlkpy8YU--ifMDp_WKg</string>
+
+    <!-- Nuevos strings para la pantalla de inicio -->
+    <string name="app_description">¡Encuentra, vende y compra vehículos de manera rápida y segura! Descubre las mejores ofertas en vehículos nuevos y usados.</string>
+    <string name="get_started">Empezar</string>
+    <string name="no_images_available">No hay imágenes disponibles</string>
 </resources>
