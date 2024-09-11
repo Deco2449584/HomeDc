@@ -27,10 +27,10 @@ fun AnimatedButton(
     text: String,
     onClickAction: () -> Unit,
     textColor: Color,
-    backgroundColors: List<Color>
+    backgroundColors: List<Color>,
 ) {
     var isPressed by remember { mutableStateOf(false) }
-    val scale by animateFloatAsState(if (isPressed) 0.95f else 1f)
+    val scale by animateFloatAsState(if (isPressed) 0.95f else 1f, label = "")
 
     Surface(
         modifier = Modifier

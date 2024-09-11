@@ -46,14 +46,22 @@ fun GetStartedScreen(navController: NavController, viewModel: ImageViewModel = h
         } else if (images.isNotEmpty()) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxSize()
             ) {
                 Text(
-                    text = "Your Vehicles Collection",
+                    text = "AutoDirectorio",
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
+                    textAlign = TextAlign.Center
                 )
-                Spacer(modifier = Modifier.height(24.dp))
+                Text(
+                    text = "¡Encuentra, vende y compra vehículos de manera rápida y segura!. " +
+                            "Descubre las mejores ofertas en vehículos nuevos y usados.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    textAlign = TextAlign.Center
+                )
 
                 ImageCarousel(
                     imageUrls = images.map { it.url },
@@ -63,13 +71,13 @@ fun GetStartedScreen(navController: NavController, viewModel: ImageViewModel = h
                     }
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
                 Text(
                     text = currentDescription,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.background,
+                    maxLines = 6
                 )
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 AnimatedButton(
                     text = "Get Started",
                     onClickAction = { navController.navigate("login") },
