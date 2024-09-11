@@ -133,7 +133,7 @@ fun RegisterScreen(
                 enter = fadeIn() + expandVertically(expandFrom = Alignment.Top)
             ) {
                 AnimatedLogoAndTitle(
-                    logoResId = R.drawable.logo,
+                    logoResId = R.drawable.logo_car,
                     titleText = "Register to HomeDc"
                 )
             }

@@ -248,7 +248,7 @@ fun GetStartedScreen(
                     text = stringResource(R.string.get_started),
                     onClickAction = { navController.navigate("login") },
                     textColor = Color.White,
-                    backgroundColors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary),
+                    backgroundColors = listOf(MaterialTheme.colorScheme.background, MaterialTheme.colorScheme.secondary),
                     modifier = Modifier
                         .fillMaxWidth()
                         .graphicsLayer(scaleX = scale, scaleY = scale)

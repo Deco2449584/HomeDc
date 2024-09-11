@@ -132,8 +132,8 @@ fun LoginScreen(
                 enter = fadeIn() + expandVertically(expandFrom = Alignment.Top)
             ) {
                 AnimatedLogoAndTitle(
-                    logoResId = R.drawable.logo,
-                    titleText = "Welcome to HomeDc"
+                    logoResId = R.drawable.logo_car,
+                    titleText = "Welcome to Car Bike"
                 )
             }
 

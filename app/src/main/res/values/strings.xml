@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">HomeDc</string>
+    <string name="app_name">CarBike</string>
     <string name="default_web_client_id">AIzaSyB_UZ5is3ifAPJjzlkpy8YU--ifMDp_WKg</string>
 
     <!-- Nuevos strings para la pantalla de inicio -->

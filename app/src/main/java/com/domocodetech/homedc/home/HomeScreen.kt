@@ -46,8 +46,8 @@ fun HomeScreen() {
             ) {
                 // Use the AnimatedLogoAndTitle composable at the top
                 AnimatedLogoAndTitle(
-                    logoResId = R.drawable.logo,
-                    titleText = "Welcome to HomeDc",
+                    logoResId = R.drawable.logo_car,
+                    titleText = "Welcome to Car Bike",
                     modifier = Modifier.padding(top = 32.dp)
                 )
                 Spacer(modifier = Modifier.height(32.dp))
