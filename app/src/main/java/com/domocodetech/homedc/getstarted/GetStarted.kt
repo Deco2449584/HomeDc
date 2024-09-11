@@ -1,12 +1,50 @@
 package com.domocodetech.homedc.getstarted
 
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.with
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,7 +53,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -29,13 +66,14 @@ fun GetStartedScreen(
     navController: NavController,
     viewModel: ImageViewModel = hiltViewModel()
 ) {
+    // Collecting state from the ViewModel
     val images by viewModel.images.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     var currentDescription by remember { mutableStateOf("") }
-    var currentPage by remember { mutableStateOf(0) }
+    var currentPage by remember { mutableIntStateOf(0) }
 
     // Animation for the background gradient
-    val infiniteTransition = rememberInfiniteTransition()
+    val infiniteTransition = rememberInfiniteTransition(label = "")
     val backgroundAlpha by infiniteTransition.animateFloat(
         initialValue = 0.3f,
         targetValue = 0.7f,
@@ -59,6 +97,7 @@ fun GetStartedScreen(
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
+        // Loading indicator
         AnimatedVisibility(
             visible = isLoading,
             enter = fadeIn() + scaleIn(),
@@ -70,6 +109,7 @@ fun GetStartedScreen(
             )
         }
 
+        // Main content when not loading and images are available
         AnimatedVisibility(
             visible = !isLoading && images.isNotEmpty(),
             enter = fadeIn() + slideInVertically(),
@@ -101,6 +141,7 @@ fun GetStartedScreen(
                     )
                 }
 
+                // App description
                 Text(
                     text = stringResource(R.string.app_description),
                     style = MaterialTheme.typography.bodyMedium,
@@ -132,32 +173,64 @@ fun GetStartedScreen(
                     )
                 }
 
-                // Animated description
-                AnimatedContent(
-                    targetState = currentDescription,
-                    transitionSpec = {
-                        fadeIn() + slideInVertically { height -> height } with
-                                fadeOut() + slideOutVertically { height -> -height }
-                    }, label = ""
-                ) { description ->
-                    Text(
-                        text = description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        maxLines = 4,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-
-                // Animated progress indicator
-                LinearProgressIndicator(
-                    progress = (currentPage + 1) / images.size.toFloat(),
+                // Improved animated description
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(4.dp)
-                        .clip(RoundedCornerShape(2.dp))
-                        .animateContentSize()
-                )
+                        .height(120.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.6f))
+                ) {
+                    AnimatedContent(
+                        targetState = currentDescription,
+                        transitionSpec = {
+                            (slideInVertically { height -> height } + fadeIn() with
+                                    slideOutVertically { height -> -height } + fadeOut()).using(
+                                SizeTransform(clip = false)
+                            )
+                        }, label = ""
+                    ) { description ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = description,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.animateContentSize()
+                            )
+                        }
+                    }
+                }
+
+                // Animated dots indicator
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    images.forEachIndexed { index, _ ->
+                        val dotSize by animateDpAsState(
+                            targetValue = if (index == currentPage) 12.dp else 8.dp, label = ""
+                        )
+                        Box(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .size(dotSize)
+                                .clip(RoundedCornerShape(50))
+                                .background(
+                                    if (index == currentPage)
+                                        MaterialTheme.colorScheme.primary
+                                    else
+                                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                                )
+                                .animateContentSize()
+                        )
+                    }
+                }
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -183,6 +256,7 @@ fun GetStartedScreen(
             }
         }
 
+        // Message when no images are available
         AnimatedVisibility(
             visible = !isLoading && images.isEmpty(),
             enter = fadeIn() + expandIn(),
