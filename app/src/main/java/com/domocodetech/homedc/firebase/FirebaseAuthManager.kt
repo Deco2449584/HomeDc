@@ -79,3 +79,4 @@ class FirebaseAuthManager(private val auth: FirebaseAuth = FirebaseAuth.getInsta
             }
     }
 }
+

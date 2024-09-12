@@ -58,6 +58,7 @@ dependencies {
 
     // Dagger Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.runtime.livedata)
     kapt(libs.hilt.android.compiler)
 
     // Navigation
@@ -71,6 +72,13 @@ dependencies {
     // Google Sign-In
     implementation(libs.play.services.auth)
 
+    // Coil
+    implementation(libs.coil.compose)
+    implementation(libs.accompanist.pager)
+
+    //tab navbar
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.navigation.compose.v253)
     // Otras dependencias existentes
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
