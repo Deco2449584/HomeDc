@@ -32,7 +32,8 @@ import com.domocodetech.homedc.R
 fun ProfileScreen(
     profileViewModel: ProfileViewModel = viewModel(),
     onLogout: () -> Unit,
-    context: Context
+    context: Context,
+    updateLoginState: (Boolean) -> Unit
 ) {
     val userName by profileViewModel.userName.collectAsState()
     val userPhotoUrl by profileViewModel.userPhotoUrl.collectAsState()
@@ -59,7 +60,10 @@ fun ProfileScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { profileViewModel.logout(onLogout, context) },
+            onClick = {
+                profileViewModel.logout(onLogout, context)
+                updateLoginState(false)
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary

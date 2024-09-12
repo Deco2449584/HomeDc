@@ -29,7 +29,8 @@ fun NavGraph(
     loginViewModel: LoginViewModel,
     googleSignInClient: GoogleSignInClient,
     context: Context,
-    signInLauncher: ActivityResultLauncher<Intent>
+    signInLauncher: ActivityResultLauncher<Intent>,
+    updateLoginState: (Boolean) -> Unit
 ) {
     Scaffold(
         bottomBar = {
@@ -47,6 +48,7 @@ fun NavGraph(
                 LoginScreen(
                     onLoginClick = { email, password ->
                         loginViewModel.loginWithEmail(email, password, context, {
+                            updateLoginState(true)
                             navController.navigate(Routes.HOME_ROUTE)
                         }, { error ->
                             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
@@ -100,7 +102,7 @@ fun NavGraph(
                             inclusive = true
                         }
                     }
-                }, context = context)
+                }, context = context, updateLoginState = updateLoginState)
             }
         }
     }
